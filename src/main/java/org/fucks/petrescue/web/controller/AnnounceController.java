@@ -1,5 +1,6 @@
 package org.fucks.petrescue.web.controller;
 
+import com.mongodb.DBObject;
 import com.mongodb.client.model.geojson.Position;
 import org.fucks.petrescue.entity.announce.Announce;
 import org.fucks.petrescue.entity.person.Credential;
@@ -23,6 +24,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,16 +47,16 @@ public class AnnounceController {
     @PostMapping("")
     public ResponseEntity save(@RequestBody AnnounceWebModel model) {
 
-        var logged = Credential.getLogged();
+        Optional<Credential> logged = Credential.getLogged();
 
         if (!logged.isPresent())
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Não autorizado!");
 
-        var credentials = logged.get();
+        Credential credentials = logged.get();
 
-        var loggedPerson = personRepository.findPersonByCredentialId(credentials.getId()).get();
+        Person loggedPerson = personRepository.findPersonByCredentialId(credentials.getId()).get();
 
-        var announce = new Announce(
+        Announce announce = new Announce(
                 model.getTitle(),
                 model.getDescription(),
                 loggedPerson,
@@ -65,7 +68,7 @@ public class AnnounceController {
         announce = this.announceRepository.save(announce);
 
         try {
-            var photos = this.fileService.save(model.getEncodedPhotos(), announce);
+            List<DBObject> photos = this.fileService.save(model.getEncodedPhotos(), announce);
 
             announce.setPhotos(
                     photos

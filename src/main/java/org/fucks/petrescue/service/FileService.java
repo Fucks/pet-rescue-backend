@@ -41,18 +41,18 @@ public class FileService {
     private GridFsOperations fileSystemOperations;
 
     public List<DBObject> save(List<EncodedPhotoModel> images, Announce announce) {
-        var base64Decoder = Base64.getDecoder();
+        Base64.Decoder base64Decoder = Base64.getDecoder();
         List<DBObject> response = new ArrayList<>();
 
         if (base64Decoder == null)
             throw new IllegalArgumentException("Não foi possível encontrar o decodificador Base 64.");
 
-        for (var image : images) {
+        for (EncodedPhotoModel image : images) {
 
-            var decodedImage = Base64.getDecoder().decode(image.getData());
-            var imageUUID = UUID.randomUUID().toString();
+            byte[] decodedImage = Base64.getDecoder().decode(image.getData());
+            String imageUUID = UUID.randomUUID().toString();
 
-            var metaData = new BasicDBObject();
+            BasicDBObject metaData = new BasicDBObject();
 
             metaData.put("announceId", announce.getId());
             metaData.put("mimetype", image.getMimetype());
@@ -69,7 +69,7 @@ public class FileService {
     }
 
     public GridFSDBFile findByUuid(String uuid) throws FileNotFoundException {
-        var file = this.fileSystemTemplate.findOne(getUuidQuery(uuid));
+        GridFSFile file = this.fileSystemTemplate.findOne(getUuidQuery(uuid));
 
         if(file != null)
             return gridFS.find(file.getObjectId());
@@ -80,7 +80,7 @@ public class FileService {
 
     private ObjectId save(byte[] data, DBObject metadata) {
 
-        var fileStream = new ByteArrayInputStream(data);
+        ByteArrayInputStream fileStream = new ByteArrayInputStream(data);
 
         ObjectId imageFileId = fileSystemTemplate.store(
                 fileStream,
@@ -93,7 +93,7 @@ public class FileService {
     }
 
     private String mountImagePath(String entityOwnerId, String entityType, String imageUUID, String mimeType) {
-        var extension = mimeType.split("/")[1];
+        String extension = mimeType.split("/")[1];
         return String.format("/%s/%s/image/%s.%s", entityType.toLowerCase(), entityOwnerId, imageUUID, extension);
     }
 

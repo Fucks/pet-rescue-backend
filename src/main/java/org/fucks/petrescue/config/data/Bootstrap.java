@@ -7,6 +7,7 @@ package org.fucks.petrescue.config.data;
 
 import com.mongodb.client.model.geojson.Position;
 import org.fucks.petrescue.entity.announce.Announce;
+import org.fucks.petrescue.entity.person.Credential;
 import org.fucks.petrescue.entity.person.Person;
 import org.fucks.petrescue.repository.announce.IAnnounceRepository;
 import org.fucks.petrescue.repository.person.ICredentialRepository;
@@ -49,7 +50,7 @@ public class Bootstrap implements InitializingBean{
         if(this.personRepository.count() > 0)
             return;
 
-        var credentials = personService.create("fucks", "fucks@fucks", "fucks");
+        Credential credentials = personService.create("fucks", "fucks@fucks", "fucks");
 
         credentials = personCredentialRepository.save(credentials);
 
@@ -66,7 +67,7 @@ public class Bootstrap implements InitializingBean{
     }
 
     private void bootstrapAnnounces() {
-        var announce1 = new Announce(
+        Announce announce1 = new Announce(
                 "Anuncio 1",
                 "Descrição",
                 person,
@@ -75,7 +76,7 @@ public class Bootstrap implements InitializingBean{
                 new Point(-25.49348,-54.53045)
         );
 
-        var announce2 = new Announce(
+        Announce announce2 = new Announce(
                 "Anuncio 2",
                 "Descrição",
                 person,
@@ -84,7 +85,7 @@ public class Bootstrap implements InitializingBean{
                 new Point(-25.49254,-54.53181)
         );
 
-        var announce3 = new Announce(
+        Announce announce3 = new Announce(
                 "Anuncio 3",
                 "Descrição",
                 person,
@@ -93,7 +94,7 @@ public class Bootstrap implements InitializingBean{
                 new Point(-25.49195,-54.53243)
         );
 
-        var announce4 = new Announce(
+        Announce announce4 = new Announce(
                 "Anuncio 4",
                 "Descrição",
                 person,

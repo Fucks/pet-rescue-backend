@@ -30,7 +30,7 @@ public class PersonService {
 
     public Credential create(String username, String email, String password) {
 
-        var credentials = new Credential(
+        Credential credentials = new Credential(
                 username,
                 passwordEncoder.encode(password),
                 email);
