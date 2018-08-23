@@ -1,6 +1,9 @@
 package org.fucks.petrescue.config.data;
 
+import com.mongodb.AuthenticationMechanism;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 import com.mongodb.gridfs.GridFS;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +15,10 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @PropertySource("classpath:application.properties")
@@ -36,7 +43,13 @@ public class MongoEntitiesConfiguration extends AbstractMongoConfiguration {
 
     @Override
     public MongoClient mongoClient() {
-        return new MongoClient(this.host, this.port);
+        ServerAddress address = new ServerAddress(this.host, this.port);
+
+        List<MongoCredential> credentials = Arrays.asList(
+            MongoCredential.createCredential(username, database, password.toCharArray())
+        );
+
+        return new MongoClient(address, credentials);
     }
 
     @Override
