@@ -16,7 +16,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 /**
  * @author fucks
@@ -71,5 +74,20 @@ public class PersonController {
     public Page get(Pageable pageable) {
 
         return this.personRepository.findAll(pageable);
+    }
+
+    @GetMapping("me")
+    public ResponseEntity authUser() {
+        Credential authenticated = (Credential) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+
+        Optional<Person> personWithCredentials = this.personRepository.findPersonByCredentialId(authenticated.getId());
+
+        if(!personWithCredentials.isPresent())
+            return ResponseEntity
+                    .notFound()
+                    .build();
+
+        return ResponseEntity
+                .ok(personWithCredentials.get());
     }
 }
