@@ -78,7 +78,7 @@ public class PersonController {
 
     @GetMapping("me")
     public ResponseEntity authUser() {
-        Credential authenticated = (Credential) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        Credential authenticated = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Optional<Person> personWithCredentials = this.personRepository.findPersonByCredentialId(authenticated.getId());
 
