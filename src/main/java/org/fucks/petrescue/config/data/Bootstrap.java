@@ -85,7 +85,7 @@ public class Bootstrap implements InitializingBean{
                 null,
                 null,
                 AnnounceType.LOST,
-                AnnounceSpecie.CAT,
+                AnnounceSpecie.FELINE,
                 new Point(-25.49254,-54.53181)
         );
 
@@ -107,7 +107,7 @@ public class Bootstrap implements InitializingBean{
                 null,
                 null,
                 AnnounceType.FOUND,
-                AnnounceSpecie.CAT,
+                AnnounceSpecie.FELINE,
                 new Point(-25.49271,-54.53548)
         );
 

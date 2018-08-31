@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public enum AnnounceSpecie {
     DOG("Dog"),
-    CAT("Cat");
+    FELINE("Feline");
 
     @Getter
     private final String name;
