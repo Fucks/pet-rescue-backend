@@ -62,7 +62,9 @@ public class AnnounceController {
                 loggedPerson,
                 null,
                 null,
-                new Point(model.getLatitude(),model.getLongitude())
+                model.getType(),
+                model.getSpecie(),
+                new Point(model.getLatitude(), model.getLongitude())
         );
 
         announce = this.announceRepository.save(announce);
@@ -72,9 +74,9 @@ public class AnnounceController {
 
             announce.setPhotos(
                     photos
-                    .stream()
-                    .map(p -> p.get("path").toString())
-                    .collect(Collectors.toList())
+                            .stream()
+                            .map(p -> p.get("path").toString())
+                            .collect(Collectors.toList())
             );
 
         } catch (Exception e) {
