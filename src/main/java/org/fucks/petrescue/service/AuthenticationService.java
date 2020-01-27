@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  *
  * @author fucks
@@ -28,11 +30,11 @@ public class AuthenticationService  implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
                 
-        var usernameUserExample = Example.of(
+        Example usernameUserExample = Example.of(
                 new Credential(usernameOrEmail, null, usernameOrEmail),
                 ExampleMatcher.matchingAny());
         
-        var credential = this.personCredentialRepository.findOne(usernameUserExample);
+        Optional<Credential> credential = this.personCredentialRepository.findOne(usernameUserExample);
         
         if(!credential.isPresent())
             throw new UsernameNotFoundException(String.format("User with username or email %s not found", usernameOrEmail));

@@ -52,6 +52,14 @@ public class Announce extends AbstractEntity {
 
     @Getter
     @Setter
+    private AnnounceType type;
+
+    @Getter
+    @Setter
+    private AnnounceSpecie specie;
+
+    @Getter
+    @Setter
     @Field
     @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
     private Point position; //position using latitude and longitude

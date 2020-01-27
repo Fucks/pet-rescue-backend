@@ -5,8 +5,10 @@
  */
 package org.fucks.petrescue.config.data;
 
-import com.mongodb.client.model.geojson.Position;
 import org.fucks.petrescue.entity.announce.Announce;
+import org.fucks.petrescue.entity.announce.AnnounceSpecie;
+import org.fucks.petrescue.entity.announce.AnnounceType;
+import org.fucks.petrescue.entity.person.Credential;
 import org.fucks.petrescue.entity.person.Person;
 import org.fucks.petrescue.repository.announce.IAnnounceRepository;
 import org.fucks.petrescue.repository.person.ICredentialRepository;
@@ -16,7 +18,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -49,7 +50,7 @@ public class Bootstrap implements InitializingBean{
         if(this.personRepository.count() > 0)
             return;
 
-        var credentials = personService.create("fucks", "fucks@fucks", "fucks");
+        Credential credentials = personService.create("fucks", "fucks@fucks", "fucks");
 
         credentials = personCredentialRepository.save(credentials);
 
@@ -66,39 +67,47 @@ public class Bootstrap implements InitializingBean{
     }
 
     private void bootstrapAnnounces() {
-        var announce1 = new Announce(
-                "Anuncio 1",
-                "Descrição",
+        Announce announce1 = new Announce(
+                "Cachorro perdido",
+                "Cachorro perdido, por favor me ajudem.",
                 person,
                 null,
                 null,
+                AnnounceType.LOST,
+                AnnounceSpecie.DOG,
                 new Point(-25.49348,-54.53045)
         );
 
-        var announce2 = new Announce(
-                "Anuncio 2",
-                "Descrição",
+        Announce announce2 = new Announce(
+                "Gatinho perdido",
+                "Perdi minha peste de estimação, se alguem ver, por favor entre em contato.",
                 person,
                 null,
                 null,
+                AnnounceType.LOST,
+                AnnounceSpecie.FELINE,
                 new Point(-25.49254,-54.53181)
         );
 
-        var announce3 = new Announce(
-                "Anuncio 3",
-                "Descrição",
+        Announce announce3 = new Announce(
+                "Cachorro encontrado",
+                "Encontrei um cachorro perambulando aqui perto de casa",
                 person,
                 null,
                 null,
+                AnnounceType.FOUND,
+                AnnounceSpecie.DOG,
                 new Point(-25.49195,-54.53243)
         );
 
-        var announce4 = new Announce(
-                "Anuncio 4",
-                "Descrição",
+        Announce announce4 = new Announce(
+                "Gato encontrado",
+                "Essa desgraça apareceu na minha casa",
                 person,
                 null,
                 null,
+                AnnounceType.FOUND,
+                AnnounceSpecie.FELINE,
                 new Point(-25.49271,-54.53548)
         );
 

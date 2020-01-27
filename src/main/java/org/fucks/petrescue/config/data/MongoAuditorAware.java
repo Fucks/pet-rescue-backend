@@ -1,6 +1,7 @@
 package org.fucks.petrescue.config.data;
 
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
@@ -9,7 +10,7 @@ public class MongoAuditorAware implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        var authenticated = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authenticated = SecurityContextHolder.getContext().getAuthentication();
 
         if(authenticated != null) {
             return Optional.of(authenticated.getName());

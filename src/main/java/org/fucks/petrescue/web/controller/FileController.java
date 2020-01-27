@@ -1,6 +1,8 @@
 package org.fucks.petrescue.web.controller;
 
+import com.mongodb.client.gridfs.model.GridFSFile;
 import com.mongodb.client.model.geojson.Position;
+import com.mongodb.gridfs.GridFSDBFile;
 import org.fucks.petrescue.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -21,9 +23,9 @@ public class FileController {
     public HttpEntity getFile(@PathVariable String entityInfo, @PathVariable String entityId, @PathVariable String imageId) throws IOException {
 
         try {
-            var file = this.fileService.findByUuid(imageId);
+            GridFSDBFile file = this.fileService.findByUuid(imageId);
 
-            var fileOutput = new ByteArrayOutputStream();
+            ByteArrayOutputStream fileOutput = new ByteArrayOutputStream();
             file.writeTo(fileOutput);
 
             return ResponseEntity
